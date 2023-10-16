@@ -21,13 +21,14 @@ export default function Home() {
     const engine = new Engine(canvas, true);
 
     const scene = new Scene(engine);
-    const camera = new FreeCamera("camera", new Vector3(0, 0.75, -2), scene);
+    const camera = new ArcRotateCamera("camera", 1, 1, 4, new Vector3(0, 0, 0));
+
     camera.attachControl(reactCanvas, true);
 
-    // scene.createDefaultEnvironment({
-    //   environmentTexture: "./forest",
-    //   skyboxTexture: "./forest",
-    // });
+    scene.createDefaultEnvironment({
+      environmentTexture: "./forest.env",
+      skyboxTexture: "./forest.env",
+    });
 
     engine.runRenderLoop(function () {
       scene.render();
@@ -48,15 +49,14 @@ export default function Home() {
       (meshes) => {
         console.log("Mesh ", meshes);
       }
-    );
-    // .then((helmet) => {
-    //   helmet.meshes[0]!.position.y = 2;
-    //   camera.setTarget(helmet.meshes[0]!);
+    ).then((helmet) => {
+      helmet.meshes[0]!.position.y = 2;
+      camera.setTarget(helmet.meshes[0]!);
 
-    //   scene.onBeforeRenderObservable.add(() => {
-    //     helmet.meshes[0]!.rotate(new Vector3(0, 1, 0), 0.001);
-    //   });
-    // });
+      scene.onBeforeRenderObservable.add(() => {
+        helmet.meshes[0]!.rotate(new Vector3(0, 1, 0), 0.001);
+      });
+    });
   });
   return (
     <main className="flex w-full flex-col items-center justify-between p-24">
