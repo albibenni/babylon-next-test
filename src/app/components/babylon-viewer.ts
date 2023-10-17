@@ -11,8 +11,6 @@ import "@babylonjs/loaders/glTF/2.0";
 import "@babylonjs/core/Helpers/sceneHelpers";
 
 export const viewer = (canvas: HTMLCanvasElement) => {
-  if (!canvas) return;
-
   const engine = new Engine(canvas, true);
 
   const scene = new Scene(engine);
