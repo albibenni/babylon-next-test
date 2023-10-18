@@ -24,9 +24,7 @@ export const viewer = (canvas: SceneInit) => {
   );
   const animate = () => {
     if (loadedModel) {
-      loadedModel.scene.rotation.x += 0.01;
-      loadedModel.scene.rotation.y += 0.01;
-      loadedModel.scene.rotation.z += 0.01;
+      loadedModel.scene.rotation.y += 0.002;
     }
     requestAnimationFrame(animate);
   };
