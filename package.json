@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
@@ -18,6 +19,7 @@
     "@babylonjs/core": "^6.24.0",
     "@babylonjs/inspector": "^6.24.0",
     "@babylonjs/loaders": "^6.24.0",
+    "@types/dat.gui": "^0.7.11",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

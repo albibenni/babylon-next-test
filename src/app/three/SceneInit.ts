@@ -16,6 +16,7 @@ export default class SceneInit {
   controls: OrbitControls | undefined;
   ambientLight: THREE.AmbientLight | undefined;
   directionalLight: THREE.DirectionalLight | undefined;
+  spotLight: THREE.SpotLight | undefined;
 
   constructor(canvasId: string) {
     // NOTE: Core components to initialize Three.js app.
@@ -37,6 +38,7 @@ export default class SceneInit {
     // NOTE: Lighting is basically required.
     this.ambientLight = undefined;
     this.directionalLight = undefined;
+    this.spotLight = undefined;
   }
 
   initialize() {
@@ -58,7 +60,8 @@ export default class SceneInit {
       antialias: true,
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    // this.renderer.shadowMap.enabled = true;
+    //! enable this for shadows
+    this.renderer.shadowMap.enabled = true;
     document.body.appendChild(this.renderer.domElement);
 
     this.clock = new THREE.Clock();
@@ -67,15 +70,15 @@ export default class SceneInit {
     document.body.appendChild(this.stats.dom);
 
     // ambient light which is for the whole scene
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
-    this.ambientLight.castShadow = true;
-    this.scene.add(this.ambientLight);
+    // this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // this.ambientLight.castShadow = true;
+    // this.scene.add(this.ambientLight);
 
     // directional light - parallel sun rays
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-    // this.directionalLight.castShadow = true;
-    this.directionalLight.position.set(0, 32, 64);
-    this.scene.add(this.directionalLight);
+    // this.directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    // // this.directionalLight.castShadow = true;
+    // this.directionalLight.position.set(0, 2, 0);
+    // this.scene.add(this.directionalLight);
 
     // if window resizes
     window.addEventListener("resize", () => this.onWindowResize(), false);
