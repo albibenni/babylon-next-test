@@ -30,15 +30,9 @@ export const viewer = (canvas: HTMLCanvasElement) => {
     engine.resize();
   });
 
-  SceneLoader.ImportMeshAsync(
-    "",
-    "./",
-    "damagedHelmet.glb",
-    scene,
-    (meshes) => {
-      console.log("Mesh ", meshes);
-    }
-  ).then((helmet) => {
+  SceneLoader.ImportMeshAsync("", "./bike/", "scene.gltf", scene, (meshes) => {
+    console.log("Mesh ", meshes);
+  }).then((helmet) => {
     helmet.meshes[0]!.position.y = 2;
     camera.setTarget(helmet.meshes[0]!);
 
