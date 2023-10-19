@@ -47,6 +47,7 @@ export default function Home() {
         glb.scene.traverse((node) => {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
+            node.receiveShadow = true;
           }
         });
       },
@@ -127,50 +128,59 @@ export default function Home() {
     dlFolder.open();
 
     // set up spot light + helper
-    // const sl = new THREE.SpotLight(0x00ff00, 1, 8, Math.PI / 8, 0);
-    // sl.position.set(0, 2, 2);
-    // const slHelper = new THREE.SpotLightHelper(sl);
-    // mainGroup.add(sl, slHelper);
+    const sl = new THREE.SpotLight(0xffffff, 1, 8, Math.PI / 8, 0);
+    sl.position.set(0, 2, 2);
+    const slHelper = new THREE.SpotLightHelper(sl);
+    mainGroup.add(sl, slHelper);
 
-    // // set up spot light gui
-    // const slSettings = {
-    //   visible: true,
-    // };
-    // const slFolder = gui.addFolder("spot light");
-    // slFolder.add(slSettings, "visible").onChange((value: boolean) => {
-    //   sl.visible = value;
-    //   slHelper.visible = value;
+    // set up spot light gui
+    const slSettings = {
+      visible: true,
+    };
+    const slFolder = gui.addFolder("spot light");
+    slFolder.add(slSettings, "visible").onChange((value: boolean) => {
+      sl.visible = value;
+      slHelper.visible = value;
+    });
+    slFolder.add(sl, "intensity", 0, 4, 0.5);
+    slFolder.add(sl, "angle", Math.PI / 16, Math.PI / 2, Math.PI / 16);
+    slFolder.add(sl, "castShadow");
+    slFolder.open();
+
+    const pl = new THREE.PointLight(0xffffff, 1, 8, 2);
+    pl.position.set(2, 2, 2);
+    const plHelper = new THREE.PointLightHelper(pl, 0.5);
+    mainGroup.add(pl, plHelper);
+
+    // set up point light gui
+    const plSettings = {
+      visible: true,
+      color: pl.color.getHex(),
+    };
+    const plFolder = gui.addFolder("point light");
+    plFolder.add(plSettings, "visible").onChange((value: boolean) => {
+      pl.visible = value;
+      plHelper.visible = value;
+    });
+    plFolder.add(pl, "intensity", 0, 2, 0.25);
+    plFolder.add(pl.position, "x", -2, 4, 0.5);
+    plFolder.add(pl.position, "y", -2, 4, 0.5);
+    plFolder.add(pl.position, "z", -2, 4, 0.5);
+    plFolder.add(pl, "castShadow");
+    plFolder
+      .addColor(plSettings, "color")
+      .onChange((value: THREE.ColorRepresentation) => pl.color.set(value));
+    plFolder.open();
+
+    // // hdr light gen
+    // const pmremGenerator = new THREE.PMREMGenerator(canvas.renderer!);
+    // const hdriLoader = new RGBELoader();
+    // hdriLoader.load("./model/texture/venice_sunset_1k.hdr", (texture) => {
+    //   const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+    //   texture.dispose();
+    //   canvas.scene!.environment = envMap;
+    //   canvas.scene!.background = envMap;
     // });
-    // slFolder.add(sl, "intensity", 0, 4, 0.5);
-    // slFolder.add(sl, "angle", Math.PI / 16, Math.PI / 2, Math.PI / 16);
-    // slFolder.add(sl, "castShadow");
-    // slFolder.open();
-
-    // const pl = new THREE.PointLight(0xffffff, 1, 8, 2);
-    // pl.position.set(2, 2, 2);
-    // const plHelper = new THREE.PointLightHelper(pl, 0.5);
-    // mainGroup.add(pl, plHelper);
-
-    // // set up point light gui
-    // const plSettings = {
-    //   visible: true,
-    //   color: pl.color.getHex(),
-    // };
-    // const plFolder = gui.addFolder("point light");
-    // plFolder.add(plSettings, "visible").onChange((value: boolean) => {
-    //   pl.visible = value;
-    //   plHelper.visible = value;
-    // });
-    // plFolder.add(pl, "intensity", 0, 2, 0.25);
-    // plFolder.add(pl.position, "x", -2, 4, 0.5);
-    // plFolder.add(pl.position, "y", -2, 4, 0.5);
-    // plFolder.add(pl.position, "z", -2, 4, 0.5);
-    // plFolder.add(pl, "castShadow");
-    // plFolder
-    //   .addColor(plSettings, "color")
-    //   .onChange((value: THREE.ColorRepresentation) => pl.color.set(value));
-    // plFolder.open();
-
     // const animate = () => {
     //   if (loadedModel) {
     //     loadedModel.scene.rotation.y += 0.002;
