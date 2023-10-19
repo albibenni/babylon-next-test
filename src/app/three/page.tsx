@@ -5,6 +5,7 @@ import SceneInit from "../three/SceneInit";
 // @ts-ignore
 import { GUI } from "dat.gui";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { error } from "console";
 
 export default function Home() {
   const reactCanvas = useRef<HTMLCanvasElement>(null);
@@ -35,27 +36,117 @@ export default function Home() {
 
     // // LOAD GLTF
     let loadedModel: GLTF;
-    loader.load(
-      "./bike/scene.gltf",
-      (glb) => {
-        loadedModel = glb;
-        glb.scene.position.x = 0;
-        glb.scene.position.y = -1.4;
-        glb.scene.scale.set(2, 2, 2);
-        // canvas.scene!.add(gltf.scene);
-        mainGroup.add(glb.scene);
-        glb.scene.traverse((node) => {
+    // loader.load(
+    //   "./bike/scene.gltf",
+    //   (glb) => {
+    //     loadedModel = glb;
+    //     glb.scene.position.x = 0;
+    //     glb.scene.position.y = -1.4;
+    //     glb.scene.scale.set(2, 2, 2);
+    //     // canvas.scene!.add(gltf.scene);
+    //     mainGroup.add(glb.scene);
+    //     glb.scene.traverse((node) => {
+    //       if (node instanceof THREE.Mesh) {
+    //         node.castShadow = true;
+    //         node.receiveShadow = true;
+    //         node.material.map = value;
+    //         //? Trying materials and textures
+    //         // const nodeGltfSettingsFolder = gui.addFolder("node gltf settings");
+    //         // nodeGltfSettingsFolder
+    //         //   .add(node.material, "wireframe")
+    //         //   .onChange((value: THREE.Texture) => {
+    //         //     node.material.map = value;
+    //         //   });
+    //       }
+    //     });
+    //   },
+    //   undefined,
+    //   function (error) {
+    //     console.error(error);
+    //   }
+    // );
+
+    //! LOAD GLTF
+    // const loadGltf = async () => await loader.loadAsync("./bike/scene.gltf");
+
+    // loadGltf()
+    //   .then((gltf) => {
+    //     gltf.scene.position.x = 0;
+    //     gltf.scene.position.y = -1.4;
+    //     gltf.scene.scale.set(2, 2, 2);
+    //     mainGroup.add(gltf.scene);
+    //     gltf.scene.traverse((node) => {
+    //       if (node instanceof THREE.Mesh) {
+    //         node.castShadow = true;
+    //         node.receiveShadow = true;
+    //         // node.material.map = ;
+    //         // const nodeGltfSettingsFolder = gui.addFolder("node gltf settings");
+    //         // nodeGltfSettingsFolder
+    //         //   .add(node.material, "wireframe")
+    //         //   .onChange((value: THREE.Texture) => {
+    //         //     node.material.map = value;
+    //         //   });
+    //       }
+    //     });
+    //   })
+    //   .catch(console.error);
+    const textureLoader = new THREE.TextureLoader();
+    const textureRandomMoto = textureLoader.load(
+      "./moto/textures/Manubrio_normal.png"
+    );
+    const textureRandomBike = textureLoader.load(
+      "./bike/textures/Saddle_normal.png"
+    );
+    const tempMaterial = new THREE.MeshStandardMaterial({
+      map: textureRandomBike,
+      normalMap: textureRandomBike,
+    });
+    //! LOAD GLTF
+    const loadGltf2 = async () => await loader.loadAsync("./moto/scene.gltf");
+
+    loadGltf2()
+      .then((gltf) => {
+        gltf.scene.position.x = 0;
+        gltf.scene.position.y = +1;
+        gltf.scene.scale.set(2, 2, 2);
+        mainGroup.add(gltf.scene);
+        gltf.scene.traverse((node) => {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
             node.receiveShadow = true;
+            node.material = tempMaterial;
+            // node.material.map = ;
+            // const nodeGltfSettingsFolder = gui.addFolder("node gltf settings");
+            // nodeGltfSettingsFolder
+            //   .add(node.material, "wireframe")
+            //   .onChange((value: THREE.Texture) => {
+            //     node.material.map = value;
+            //   });
           }
         });
-      },
-      undefined,
-      function (error) {
-        console.error(error);
-      }
-    );
+      })
+      .catch(console.error);
+    //? Trying materials and textures
+
+    // .then((glb) => {
+    //   (glb: GLTF) => {
+    //     loadedModel = glb;
+    //     glb.scene.position.x = 0;
+    //     glb.scene.position.y = -1.4;
+    //     glb.scene.scale.set(2, 2, 2);
+    //     // canvas.scene!.add(gltf.scene);
+    //     mainGroup.add(glb.scene);
+    //     glb.scene.traverse((node) => {
+    //       if (node instanceof THREE.Mesh) {
+    //         node.castShadow = true;
+    //         node.receiveShadow = true;
+    //         node.material.map = ;
+    // const nodeGltfSettingsFolder = gui.addFolder("node gltf settings");
+    // nodeGltfSettingsFolder
+    //   .add(node.material, "wireframe")
+    //   .onChange((value: THREE.Texture) => {
+    //     node.material.map = value;
+    //   });
 
     // // set up blue box mesh
     // const bg3 = new THREE.BoxGeometry(1, 1, 1);
@@ -182,8 +273,8 @@ export default function Home() {
     //   canvas.scene!.background = envMap;
     // });
     // const animate = () => {
-    //   if (loadedModel) {
-    //     loadedModel.scene.rotation.y += 0.002;
+    //   if (gltf) {
+    //     gltf.scene.rotation.y += 0.002;
     //   }
     //   requestAnimationFrame(animate);
     // };
