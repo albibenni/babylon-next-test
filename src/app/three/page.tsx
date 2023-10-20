@@ -96,10 +96,11 @@ export default function Home() {
     );
     const textureRandomBike = textureLoader.load(
       "./bike/textures/Saddle_normal.png"
+      // "./moto/textures/Marmitta_normal.png"
     );
     const tempMaterial = new THREE.MeshStandardMaterial({
       map: textureRandomBike,
-      normalMap: textureRandomBike,
+      // normalMap: textureRandomBike,
     });
     //! LOAD GLTF
     const loadGltf2 = async () => await loader.loadAsync("./moto/scene.gltf");
@@ -114,7 +115,32 @@ export default function Home() {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
             node.receiveShadow = true;
-            node.material = tempMaterial;
+            if (node.material.map && node.material.name === "Bauletto") {
+              // for (let index = 0; index < node.material.length; index++) {
+              //   const element = node.material[index];
+              //   console.log(element.name);
+              //   if (element.name === "Bauletto")
+              //     element.material = tempMaterial;
+              // }
+
+              node.material = new THREE.MeshStandardMaterial({
+                map: textureRandomBike,
+                // normalMap: texture[1],
+              });
+              // node.material.map =
+              node.material.map.needsUpdate = true;
+              console.log(node.material);
+              console.log(node.material.length);
+            }
+            // node.material = {
+            //   // ...node.material,
+            //   // tempMaterial,
+
+            // };
+
+            // mesh.material.map = THREE.ImageUtils.loadTexture( src );
+            // mesh.material.needsUpdate = true;
+
             // node.material.map = ;
             // const nodeGltfSettingsFolder = gui.addFolder("node gltf settings");
             // nodeGltfSettingsFolder
