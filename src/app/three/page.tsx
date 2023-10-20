@@ -98,9 +98,21 @@ export default function Home() {
       "./bike/textures/Saddle_normal.png"
       // "./moto/textures/Marmitta_normal.png"
     );
+    const textureBlueSaddleBaseColor = textureLoader.load(
+      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png"
+      // "./moto/textures/Marmitta_normal.png"
+    );
+    const textureBlueSaddleMetallicRoughness = textureLoader.load(
+      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_Sella_Roughness.png"
+    );
+    const textureBlueSaddleNormal = textureLoader.load(
+      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png"
+    );
     const tempMaterial = new THREE.MeshStandardMaterial({
-      map: textureRandomBike,
-      // normalMap: textureRandomBike,
+      map: textureBlueSaddleBaseColor,
+      normalMap: textureBlueSaddleNormal,
+      metalnessMap: textureBlueSaddleMetallicRoughness,
+      roughnessMap: textureBlueSaddleMetallicRoughness,
     });
     //! LOAD GLTF
     const loadGltf2 = async () => await loader.loadAsync("./moto/scene.gltf");
@@ -115,19 +127,15 @@ export default function Home() {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
             node.receiveShadow = true;
-            if (node.material.map && node.material.name === "Bauletto") {
-              // for (let index = 0; index < node.material.length; index++) {
-              //   const element = node.material[index];
-              //   console.log(element.name);
-              //   if (element.name === "Bauletto")
-              //     element.material = tempMaterial;
-              // }
-
-              node.material = new THREE.MeshStandardMaterial({
-                map: textureRandomBike,
-                // normalMap: texture[1],
-              });
+            if (node.material.map && node.material.name === "Sella") {
+              // node.material = new THREE.MeshStandardMaterial({
+              //   name: "Sella",
+              //   map: textureBlueSaddle,
+              //   metalnessMap: textureBlueSaddleRoughness,
+              //   // normalMap: texture[1],
+              // });
               // node.material.map =
+              node.material = tempMaterial;
               node.material.map.needsUpdate = true;
               console.log(node.material);
               console.log(node.material.length);
@@ -135,6 +143,7 @@ export default function Home() {
             // node.material = {
             //   // ...node.material,
             //   // tempMaterial,
+            console.log(node.material);
 
             // };
 
