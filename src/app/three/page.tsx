@@ -98,20 +98,23 @@ export default function Home() {
       "./bike/textures/Saddle_normal.png"
       // "./moto/textures/Marmitta_normal.png"
     );
-    const textureBlueSaddleBaseColor = textureLoader.load(
-      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png"
-      // "./moto/textures/Marmitta_normal.png"
-    );
+    // const textureBlueSaddleBaseColor = textureLoader.load(
+    //   "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png"
+    //   "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png"
+    //   /Users/benni/benni-projects/babylon-next-test/public/moto/all-textures/SELLA/_pelle bianca/_pelle bianca_Sella_Diffuse.png
+    //   // "./moto/textures/Marmitta_normal.png"
+    // );
     const textureBlueSaddleMetallicRoughness = textureLoader.load(
-      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_Sella_Roughness.png"
+      "./moto/all-textures/SELLA/_pelle bianca/_pelle bianca_Sella_Roughness.png"
     );
     const textureBlueSaddleNormal = textureLoader.load(
-      "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png"
+      // "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png"
+      "./moto/all-textures/SELLA/_pelle bianca/_pelle bianca_Sella_Normal.png"
     );
     const tempMaterial = new THREE.MeshStandardMaterial({
-      map: textureBlueSaddleBaseColor,
+      // map: textureBlueSaddleBaseColor,
       normalMap: textureBlueSaddleNormal,
-      metalnessMap: textureBlueSaddleMetallicRoughness,
+      // metalnessMap: textureBlueSaddleMetallicRoughness,
       roughnessMap: textureBlueSaddleMetallicRoughness,
     });
     //! LOAD GLTF
