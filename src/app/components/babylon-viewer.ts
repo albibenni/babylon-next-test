@@ -94,7 +94,11 @@ export const viewer = (canvas: HTMLCanvasElement) => {
     console.log(scene);
     if (!sellaMesh || !sellaMesh.material) console.log("Material undefined");
     updateMeshMaterial(
-      ["./moto/swap-t/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png"],
+      [
+        "./moto/swap-t/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png",
+        "./moto/swap-t/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png",
+        "./moto/swap-t/SELLA/_pelle blu/_pelle blu_Sella_Roughness.png",
+      ],
       scene,
       sellaMesh!.material as PBRMaterial
     );
@@ -147,18 +151,6 @@ const updateMeshMaterial = (
   scene: Scene,
   pbr: PBRMaterial
 ) => {
-  let mat = new PBRMaterial("test-Sella", scene);
-  // mat.bumpTexture = new Texture(paths[0], scene);
-  mat.bumpTexture = new Texture(paths[0], scene);
-  mat.albedoTexture = null;
-  mat.albedoColor = Color3.FromHexString("#FF1100");
-  console.log(pbr);
-  scene.meshes.forEach((m) => {
-    if (m.material === pbr) {
-      m.material = mat;
-    }
-  });
-
-  // if (!existingMat) return;
-  // existingMat = new BABYLON.StandardMaterial
+  pbr.albedoTexture = new Texture(paths[1], scene);
+  pbr.roughness = 1;
 };
