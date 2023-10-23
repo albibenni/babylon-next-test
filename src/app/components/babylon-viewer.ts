@@ -1,9 +1,16 @@
 "use client";
 import {
+  AbstractMesh,
   ArcRotateCamera,
+  Color3,
+  ColorGradingTexture,
   Engine,
+  Material,
+  PBRMaterial,
   Scene,
   SceneLoader,
+  StandardMaterial,
+  Texture,
   Vector3,
 } from "@babylonjs/core";
 import "@babylonjs/core/Helpers/sceneHelpers";
@@ -38,49 +45,82 @@ export const viewer = (canvas: HTMLCanvasElement) => {
   // window.addEventListener("resize", () => {
   //   engine.resize();
   // });
-  const loadScene = SceneLoader.Append(
+  // const sceneLoader = SceneLoader.ImportMesh(
+  //   "",
+  //   "./moto/model/",
+  //   "scene.gltf",
+  //   scene,
+  //   () => {
+  //     scene.createDefaultCameraOrLight();
+  //     if (!scene.activeCamera) return;
+
+  //     console.log(scene.meshes);
+
+  //     //   Click action in image
+  //     //   text_button.onPointerUpObservable.add(() => {
+  //     //     BABYLON.SceneLoader.ImportMesh("", "https://dl.dropbox.com/s/pc4g5eyf98w7qcb/", "fit shirt .glb", scene, function (newMeshes) {
+  //     //         var mesh = newMeshes[1];
+
+  //     //         mesh.parent = hero
+  //     //         newMeshes[0].dispose()
+  //     //         shirt_mesh.dispose()
+
+  //     //     });
+  //     // });
+  //   }
+  // );
+
+  // const sellaMesh: AbstractMesh[] | undefined = scene.meshes.filter(
+  //   (mesh) => mesh.material?.id === "Sella_Sella_0"
+  // );
+
+  SceneLoader.ImportMeshAsync(
+    "",
     "./moto/model/",
     "scene.gltf",
     scene,
     (meshes) => {
-      scene.createDefaultCameraOrLight(true);
+      scene.createDefaultCameraOrLight();
       if (!scene.activeCamera) return;
-      // scene.activeCamera.attachControl(canvas, true);
-      scene.render();
     }
-  );
-  // SceneLoader.ImportMesh(
-  //   "moto",
-  //   "./moto/",
-  //   "scene.gltf",
-  //   scene,
-  //   (meshes) => {}
-  // ).then((r) => {
-  // const result = r.meshes[0];
-  // result.position.y = 1;
-  // camera.setTarget(r.meshes[0]!);
-  // const materials: Material[] = scene.materials;
-  // // console.log(r);
-  // // console.log(scene);
+  ).then((r) => {
+    const result = r.meshes[0];
+    result.position.y = 1;
+    camera.setTarget(r.meshes[0]!);
+    const materials: Material[] = scene.materials;
+    // console.log(r);
+    // console.log(scene);
+    const sellaMesh = scene.getMeshByName("Sella_Sella_0");
+    console.log(scene);
+    if (!sellaMesh || !sellaMesh.material) console.log("Material undefined");
+    updateMeshMaterial(
+      ["./moto/swap-t/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png"],
+      scene,
+      sellaMesh!.material as PBRMaterial
+    );
 
-  // materials.map((material) => {
-  //   // material.freeze();
-  //   if (material.name === "Sella") {
-  //     const myMaterial = new StandardMaterial("sella blu", scene);
-  //     myMaterial.diffuseTexture = new Texture(
-  //       "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png",
-  //       scene
-  //     );
-  //     // myMaterial.specularPower = 1;
-  //     console.log(r.meshes.map((mesh) => mesh));
-  //     console.log(r.meshes[12].material);
-  //     // r.meshes[12].material = myMaterial;
-  //     // material = new NodeMaterial(
-  //     //   "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png",
-  //     //   scene
-  //     // );
-  //   }
-  // });
+    console.log(sellaMesh!.material);
+
+    // materials.map((material) => {
+    //   // material.freeze();
+    //   if (material.name === "Sella") {
+    //     const myMaterial = new StandardMaterial("sella blu", scene);
+    //     myMaterial.diffuseTexture = new Texture(
+    //       "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_Normal.png",
+    //       scene
+    //     );
+    //     // myMaterial.specularPower = 1;
+    //     console.log(r.meshes.map((mesh) => mesh));
+    //     console.log(r.meshes[12].material);
+    // r.meshes[12].material = myMaterial;
+    // material = new NodeMaterial(
+    //   "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png",
+    //   scene
+    // );
+    //   }
+    // });
+    return scene;
+  });
 
   // const textureBlueSaddleBaseColor = textureLoader.load(
   //   "./moto/all-textures/SELLA/_pelle blu/_pelle blu_LP_Sella_BaseColor.png"
@@ -100,4 +140,25 @@ export const viewer = (canvas: HTMLCanvasElement) => {
   engine.runRenderLoop(() => {
     scene.render();
   });
+};
+
+const updateMeshMaterial = (
+  paths: string[],
+  scene: Scene,
+  pbr: PBRMaterial
+) => {
+  let mat = new PBRMaterial("test-Sella", scene);
+  // mat.bumpTexture = new Texture(paths[0], scene);
+  mat.bumpTexture = new Texture(paths[0], scene);
+  mat.albedoTexture = null;
+  mat.albedoColor = Color3.FromHexString("#FF1100");
+  console.log(pbr);
+  scene.meshes.forEach((m) => {
+    if (m.material === pbr) {
+      m.material = mat;
+    }
+  });
+
+  // if (!existingMat) return;
+  // existingMat = new BABYLON.StandardMaterial
 };
