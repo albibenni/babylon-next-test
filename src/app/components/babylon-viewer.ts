@@ -151,6 +151,8 @@ const updateMeshMaterial = (
   scene: Scene,
   pbr: PBRMaterial
 ) => {
+  pbr.ambientTexture = new Texture(paths[0], scene);
   pbr.albedoTexture = new Texture(paths[1], scene);
+  pbr.metallicTexture = new Texture(paths[2], scene);
   pbr.roughness = 1;
 };
